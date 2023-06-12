@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from origins.em import create_particle
 
 
 class ScatterRunner:
 
     def __init__(self, universe):
-        self._universe = universe
+        self.universe = universe
 
     def start(self):
         # Create the figure and axis
@@ -17,12 +16,12 @@ class ScatterRunner:
         scatter = ax.scatter([], [], c='blue')
 
         # Set the axis limits
-        ax.set_xlim(0, self._universe.x)
-        ax.set_ylim(0, self._universe.y)
+        ax.set_xlim(0, self.universe.size_x)
+        ax.set_ylim(0, self.universe.size_y)
 
         # Animation update function
         def update(frame):
-            self._universe.update()
+            self.universe.update()
 
             # Update the scatter plot data
             scatter.set_offsets(self.universe.get_scatter_info())
