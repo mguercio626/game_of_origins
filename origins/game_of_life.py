@@ -1,5 +1,6 @@
 import random
 from origins.visual import print_array
+from pprint import pprint
 
 
 def create_universe(size):
@@ -40,7 +41,7 @@ def update_universe(universe):
             else:
                 universe[x][y]=0
 
-    
+
 
 def run(size, n):
     """
@@ -56,4 +57,4 @@ def run(size, n):
     universe = create_universe(size)
     for i in range(n):
         update_universe(universe)
-        print_array(universe)
+        pprint(universe)

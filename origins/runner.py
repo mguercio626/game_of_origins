@@ -3,31 +3,34 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from origins.em import create_particle
 
-# Create the figure and axis
-fig, ax = plt.subplots()
 
-# Initialize an empty scatter plot
-scatter = ax.scatter([], [], c='blue')
+class ScatterRunner:
 
-# Set the axis limits
-ax.set_xlim(0, 10)
-ax.set_ylim(0, 10)
+    def __init__(self, universe):
+        self._universe = universe
 
-particles = [create_particle() for i in range(10)]
+    def start(self):
+        # Create the figure and axis
+        fig, ax = plt.subplots()
 
-# Animation update function
-def update(frame):
-    # Generate new random data for each frame
-    x = [particle['x'] for particle in particles]
-    y = [particle['y'] for particle in particles]
+        # Initialize an empty scatter plot
+        scatter = ax.scatter([], [], c='blue')
 
-    # Update the scatter plot data
-    scatter.set_offsets(np.column_stack((x, y)))
+        # Set the axis limits
+        ax.set_xlim(0, self._universe.x)
+        ax.set_ylim(0, self._universe.y)
 
-    return scatter,
+        # Animation update function
+        def update(frame):
+            self._universe.update()
 
-# Create the animation
-animation = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
+            # Update the scatter plot data
+            scatter.set_offsets(self.universe.get_scatter_info())
 
-# Show the animation
-plt.show()
+            return scatter,
+
+        # Create the animation
+        animation = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
+
+        # Show the animation
+        plt.show()
