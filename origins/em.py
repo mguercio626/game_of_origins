@@ -17,6 +17,6 @@ for i in range(2):
     atom = Ion()
     atom.randomize()
     atoms.append(atom)
-universe = Universe(atoms, 100, 100, forces=[Electric(10)])
-runner = ScatterRunner(universe)
+universe = Universe(atoms, 100, 100, forces=[Electric(1)])
+runner = ScatterRunner(universe, interval=100)
 runner.start()

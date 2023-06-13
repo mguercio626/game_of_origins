@@ -5,7 +5,8 @@ from matplotlib.animation import FuncAnimation
 
 class ScatterRunner:
 
-    def __init__(self, universe):
+    def __init__(self, universe, interval):
+        self.interval = interval
         self.universe = universe
 
     def start(self):
@@ -29,7 +30,7 @@ class ScatterRunner:
             return scatter,
 
         # Create the animation
-        animation = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
+        animation = FuncAnimation(fig, update, frames=100, interval=self.interval, blit=True)
 
         # Show the animation
         plt.show()

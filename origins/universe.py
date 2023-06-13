@@ -1,4 +1,6 @@
+from itertools import combinations
 import random
+import time
 
 def distance(atom1, atom2):
     x=atom1.x-atom2.x
@@ -72,16 +74,14 @@ class Electric(Force):
                 atom1.vy += abs(fy)/atom1.mass
                 atom2.vy -= abs(fy)/atom2.mass
 
-        for atom1 in atoms:
-             for atom2 in atoms:
-                 if atom1 is not atom2:
-                     magnitude = self.force(atom1,atom2)
-                     fx, fy = components(magnitude, atom1, atom2)
-                     if magnitude<0:
-                         repulsive(magnitude,atom1,atom2)
-                     else: 
-                         attractive(magnitude,atom1,atom2)
-        
+        for atom1,atom2 in combinations(atoms,2):
+            magnitude = self.force(atom1,atom2)
+            fx, fy = components(magnitude, atom1, atom2)
+            if magnitude<0:
+                repulsive(magnitude,atom1,atom2)
+            else: 
+                attractive(magnitude,atom1,atom2)
+    
                            
 class Atom():
     """
@@ -129,20 +129,47 @@ class Molecule():
 
 class Universe():
 
-    def __init__(self, atoms, size_x, size_y,  forces=[Electric(10)],
-                 iteration_time=200):
+    def __init__(self, atoms, size_x, size_y,  forces=[Electric(10)]):
         self.size_x = size_x
         self.size_y = size_y
         self.atoms = atoms
         self.forces = forces
-        self.iteration_time = iteration_time
+        self.t1 = None
+
+    def update_position(self, atom):
+        """
+        Update the position of an Atom.
+        Atoms will bounce off the boundaries of the Universe.
+        """
+
+        # Figure out the time since the last update.
+        if self.t1 is None:
+            self.t1 = time.time()
+        t2 = time.time()
+        delta_t = t2 - self.t1
+
+        future_x = atom.x + (atom.vx * delta_t)
+        future_y = atom.y + (atom.vy * delta_t)
+
+        if future_x <= 0 or future_x >= self.size_x:
+            atom.vx*=-1
+        if future_y <= 0 or future_y >= self.size_y:
+            atom.vy*=-1
+
+        atom.x += atom.vx * delta_t
+        atom.y += atom.vy * delta_t
+
+        self.t1 = t2
 
     def update(self):
-        for atom in self.atoms:
-            atom.x += atom.vx * self.iteration_time
-            atom.y += atom.vy * self.iteration_time
+        # Apply the forces to the atoms.
+        # Applying a force changes the x and y velocity of the atoms.
         for force in self.forces:
             force.apply(self.atoms)
+
+         # Update the positions of the atoms.
+        for atom in self.atoms:
+            self.update_position(atom)
 
     def get_scatter_info(self):
         return [(atom.x,atom.y) for atom in self.atoms]
