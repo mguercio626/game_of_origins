@@ -1,84 +1,88 @@
 import random
 
+def distance(atom1, atom2):
+    x=atom1.x-atom2.x
+    y=atom1.y-atom2.y
+    return (x**2+y**2)**.5
+
+def components(magnitude, atom1, atom2):
+    x_dist = atom1.x - atom2.x
+    y_dist = atom1.y - atom2.y
+    total_dist =distance(atom1, atom2)
+    xratio = abs(x_dist) / total_dist
+    yratio = abs(y_dist) / total_dist
+    x = magnitude * xratio
+    y = magnitude * yratio
+    return x, y
+
+
 class Force():
     """
     The definition of a force.
     """
-    def distance(self, atom1,atom2):
-        x=atom1.x-atom2.x
-        y=atom1.y-atom2.y
-        return (x**2+y**2)**.5
-    
-    def components(self, magnitude, atom1, atom2):
-        x_dist = atom1.x - atom2.x
-        y_dist = atom1.y - atom2.y
-        total_dist = self.distance(atom1, atom2)
-        xratio = abs(x_dist) / total_dist
-        yratio = abs(y_dist) / total_dist
-        x = magnitude * xratio
-        y = magnitude * yratio
-        return x, y
+    def __init__(self, multiplier):
+        self.multiplier = multiplier
 
-    def apply(atoms):
-        pass
+    def apply(self, atoms):
+        raise NotImplementedError("This is a base class, this method must be overridden in the derived class.")
     
 
 class Wind(Force):
     """
     The definition of a force.
     """
-    def apply(atoms):
+    def apply(self, atoms):
         for atom in atoms:
-            atom.x += 1
+            atom.x += self.multiplier
+
 
 class Electric(Force):
-    constant_k = 10
-    iteration_time = 200
     
     def force(self, atom1, atom2):
-        return (self.constant_k * atom1.charge * atom2.charge) \
-                /self.distance(atom1,atom2)**2
+        return (self.multiplier * atom1.charge * atom2.charge) \
+                /distance(atom1,atom2)**2
     
     def apply(self, atoms):
-         atom1 = atoms[0]
-         atom2 = atoms[1]
-         magnitude = self.force(atom1,atom2)
-         fx, fy = self.components(magnitude, atom1, atom2)
-         def attractive(magnitude,atom1,atom2):
-             if atom1.x<atom2.x:
+
+        def attractive(magnitude, atom1, atom2):
+            if atom1.x<atom2.x:
                 atom1.vx += abs(fx)/atom1.mass
                 atom2.vx -= abs(fx)/atom2.mass
-             else:
+            else:
                 atom1.vx -= abs(fx)/atom1.mass
                 atom2.vx += abs(fx)/atom2.mass
-             if atom1.y < atom2.y:
+            if atom1.y < atom2.y:
                 atom1.vy += abs(fy)/atom1.mass
                 atom2.vy -= abs(fy)/atom2.mass
-             else:
+            else:
                 atom1.vy -= abs(fy)/atom1.mass
                 atom2.vy += abs(fy)/atom2.mass
-         def repulsive(magnitude,atom1,atom2):
-             if atom1.x<atom2.x:
+
+        def repulsive(magnitude, atom1, atom2):
+            if atom1.x<atom2.x:
                 atom1.vx -= abs(fx)/atom1.mass
                 atom2.vx += abs(fx)/atom2.mass
-             else:
+            else:
                 atom1.vx += abs(fx)/atom1.mass
                 atom2.vx -= abs(fx)/atom2.mass
-             if atom1.y < atom2.y:
+            if atom1.y < atom2.y:
                 atom1.vy -= abs(fy)/atom1.mass
                 atom2.vy += abs(fy)/atom2.mass
-             else:
+            else:
                 atom1.vy += abs(fy)/atom1.mass
                 atom2.vy -= abs(fy)/atom2.mass
-         if magnitude<0:
-             repulsive(magnitude,atom1,atom2)
-         else: 
-             attractive(magnitude,atom1,atom2)
+
+        for atom1 in atoms:
+             for atom2 in atoms:
+                 if atom1 is not atom2:
+                     magnitude = self.force(atom1,atom2)
+                     fx, fy = components(magnitude, atom1, atom2)
+                     if magnitude<0:
+                         repulsive(magnitude,atom1,atom2)
+                     else: 
+                         attractive(magnitude,atom1,atom2)
         
-         
-                         
-            
-         
+                           
 class Atom():
     """
     The most basic object in the universe.
@@ -125,7 +129,7 @@ class Molecule():
 
 class Universe():
 
-    def __init__(self, atoms, size_x, size_y,  forces=[Electric],
+    def __init__(self, atoms, size_x, size_y,  forces=[Electric(10)],
                  iteration_time=200):
         self.size_x = size_x
         self.size_y = size_y
