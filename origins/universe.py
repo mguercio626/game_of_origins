@@ -93,12 +93,12 @@ class Electric(Force):
         for atom1,atom2 in combinations(atoms,2):
 
             fx, fy = self.force_components(atom1, atom2)
-            atom1.vx += fx
-            atom1.vy += fy
+            atom1.vx += fx/atom1.mass
+            atom1.vy += fy/atom1.mass
 
             fx, fy = self.force_components(atom2, atom1)
-            atom2.vx += fx
-            atom2.vy += fy
+            atom2.vx += fx/atom2.mass
+            atom2.vy += fy/atom2.mass
             
             #magnitude = self.force(atom1,atom2)
             
@@ -179,7 +179,14 @@ class Universe():
         atom.x += atom.vx * delta_t
         atom.y += atom.vy * delta_t
 
-        
+    def collisions(self,atoms,min_distance=1):
+         for atom1,atom2 in combinations(atoms,2):
+            if abs(atom1.x-atom2.x) < min_distance and \
+            abs(atom1.y-atom2.y) < min_distance: 
+                 atom1.vx *= -1
+                 atom1.vy *= -1
+                 atom2.vx *= -1
+                 atom2.vx *= -1   
 
     def update(self):
         # Figure out the time since the last update.
@@ -192,11 +199,12 @@ class Universe():
         # Applying a force changes the x and y velocity of the atoms.
         for force in self.forces:
             force.apply(self.atoms)
+       
+        #Prevents atoms from being in same location by having collisions 
+        self.collisions(self.atoms)
 
          # Update the positions of the atoms.
-        print("update")
         for atom in self.atoms:
-            print(atom.name)
             self.update_position(atom, delta_t)
         
         self.t1 = t2
