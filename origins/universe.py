@@ -174,27 +174,7 @@ class Universe():
                  atom2.vx *= -1
                  atom2.vx *= -1
 
-    def form_molecule(self,atoms,min_distance=1,bond_length=0.5):
-         for atom1,atom2 in combinations(atoms,2):
-             if distance(atom1,atom2) < min_distance:
-
-        #add in requiements for molecule formation
-                 if atom1.charge== -atom2.charge:
-                     atom1.vx = atom2.vx
-                     atom1.vy = atom2.vx
-                     atom1.x = atom2.x + bond_length
-                     atom1.y = atom2.y + bond_length
-                     atom1.charge = 0
-                     atom2.charge = 0
-                # add in way to switch list from atoms to molecules
-                # need to update rules to apply for molcules and atoms??
-                 else:
-                     atom1.vx *= -1
-                     atom1.vy *= -1
-                     atom2.vx *= -1
-                     atom2.vx *= -1
-
-    def form_molecule2(self, atoms, min_distance=1, bond_length=0.5):
+    def form_molecule(self, atoms, min_distance=1, bond_length=0.5):
          for atom1,atom2 in combinations(atoms, 2):
              if distance(atom1,atom2) < min_distance:
 
@@ -225,7 +205,7 @@ class Universe():
         #Prevents atoms from being in same location by having collisions
         #self.collisions(self.atoms)
 
-        self.form_molecule2(self.atoms)
+        self.form_molecule(self.atoms)
 
         #if collision:
         #    try:
