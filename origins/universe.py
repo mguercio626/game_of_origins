@@ -48,7 +48,7 @@ class Electric(Force):
         """
         returns the x and y components of the force of atom2 on atom1.
         """
-        dist = distance(atom1, atom2)
+        dist = max(distance(atom1, atom2), 1E-9)
         magnitude = (self.multiplier * atom1.charge * atom2.charge)/dist**2
         xratio = (atom1.x - atom2.x) / dist
         yratio = (atom1.y - atom2.y) / dist
@@ -114,11 +114,11 @@ class Atom():
     """
     def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, name='atom'):
         self.name = name
-        self.max_x = 100
-        self.max_y = 100
+        self.max_x = 25
+        self.max_y = 25
         self.max_vx = 10
         self.max_vy = 10
-        self.max_mass = 5
+        self.max_mass = 50
         self.x = x
         self.y = y
         self.vx = vx
@@ -135,8 +135,8 @@ class Atom():
 class Ion(Atom):
 
     def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, charge=0, name='ion'):
-        self.max_charge = 10
-        self.min_charge = -10
+        self.max_charge = 2
+        self.min_charge = -2
         self.charge = charge
         super().__init__(x, y, vx, vy, mass, name=name)
 
@@ -144,6 +144,25 @@ class Ion(Atom):
         self.charge = random.randint(self.min_charge, self.max_charge)
         super().randomize()
 
+
+class OppositeBond():
+    def __init__(self, atom1, atom2):
+        if atom1.charge != -1*atom2.charge:
+            raise ValueError("atoms must have equal and opposite charge to form OppositeBond")
+
+    def update_charges(self):
+        pass
+
+class Bond():
+    def __init__(self,atom1,atom2):
+        self.atom1 = atom1
+        self.atom2 = atom2
+
+    def opposites():
+         
+   
+     def covalent():
+        pass 
 
 
 class Molecule():
@@ -159,6 +178,7 @@ class Universe():
         self.size_x = size_x
         self.size_y = size_y
         self.atoms = atoms
+        self.bonds = []
         self.forces = forces
         self.t1 = None
 
@@ -188,20 +208,69 @@ class Universe():
                  atom2.vx *= -1
                  atom2.vx *= -1   
 
+    def form_molecule(self,atoms,min_distance=1,bond_length=0.5):
+         for atom1,atom2 in combinations(atoms,2):
+             if distance(atom1,atom2) < min_distance:
+       
+        #add in requiements for molecule formation
+                 if atom1.charge== -atom2.charge: 
+                     atom1.vx = atom2.vx
+                     atom1.vy = atom2.vx
+                     atom1.x = atom2.x + bond_length
+                     atom1.y = atom2.y + bond_length
+                     atom1.charge = 0
+                     atom2.charge = 0
+                # add in way to switch list from atoms to molecules
+                # need to update rules to apply for molcules and atoms??
+                 else: 
+                     atom1.vx *= -1
+                     atom1.vy *= -1
+                     atom2.vx *= -1
+                     atom2.vx *= -1
+
+    def form_molecule2(self,atoms,min_distance=1,bond_length=0.5):
+         for atom1,atom2 in combinations(atoms,2):
+             if distance(atom1,atom2) < min_distance:
+       
+                #add in requiements for molecule formation
+                if atom1.charge == -atom2.charge: 
+                    atom1.vx = atom2.vx
+                    atom1.vy = atom2.vx
+                    atom1.x = atom1.x - atom1.x - atom2.x + bond_length
+                    atom1.y = atom1.y - atom1.y - atom2.y + bond_length
+                    atom1.charge = 0
+                    atom2.charge = 0
+                # add in way to switch list from atoms to molecules
+                # need to update rules to apply for molcules and atoms??
+                else: 
+                    atom1.vx *= -1
+                    atom1.vy *= -1
+                    atom2.vx *= -1
+                    atom2.vx *= -1
+
     def update(self):
         # Figure out the time since the last update.
         if self.t1 is None:
             self.t1 = time.time()
         t2 = time.time()
         delta_t = t2 - self.t1
+        
+        #Prevents atoms from being in same location by having collisions 
+        self.collisions(self.atoms)
+        self.form_molecule(self.atoms)
+
+        if collision:
+            try:
+                bonds.append(OppositeBond(atom1, atom2))
+            except ValueError:
+                pass
+
 
         # Apply the forces to the atoms.
         # Applying a force changes the x and y velocity of the atoms.
         for force in self.forces:
             force.apply(self.atoms)
-       
-        #Prevents atoms from being in same location by having collisions 
-        self.collisions(self.atoms)
+    
 
          # Update the positions of the atoms.
         for atom in self.atoms:
@@ -209,5 +278,11 @@ class Universe():
         
         self.t1 = t2
 
-    def get_scatter_info(self):
+    def get_positions(self):
         return [(atom.x,atom.y) for atom in self.atoms]
+    
+    def get_masses(self):
+        return [atom.mass for atom in self.atoms]
+
+    def get_charges(self):
+        return [atom.charge for atom in self.atoms]

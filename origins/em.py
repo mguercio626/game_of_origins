@@ -20,7 +20,7 @@ for i in range(10):
     atom = Ion()
     atom.randomize()
     atoms.append(atom)
-
-universe = Universe(atoms, 100, 100, forces=[Electric(1)])
+    
+universe = Universe(atoms, 25, 25, forces=[Electric(1)])
 runner = ScatterRunner(universe, interval=(20))
 runner.start()
