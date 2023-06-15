@@ -1,6 +1,7 @@
 from itertools import combinations
 import random
 import time
+import networkx as nx
 
 
 def distance(atom1, atom2):
@@ -110,28 +111,19 @@ class Ion(Atom):
         super().randomize()
 
 
-class Molecule:
-    """
-    A group of Atoms.
-    Maybe we don't need this.
-    """
-
-    pass
-
-
 class Universe:
     def __init__(self, atoms, size_x, size_y, forces=[Electric(10)]):
         self.size_x = size_x
         self.size_y = size_y
         self.atoms = atoms
-        self.bonds = {atom: set() for atom in atoms}
         self.forces = forces
         self.t1 = None
+        self.molecules = nx.Graph()
+        self.molecules.add_nodes_from(atoms)
 
     def opposite_bond(self, atom1, atom2):
         if atom1.charge == -atom2.charge:
-            self.bonds[atom1].add(atom2)
-            self.bonds[atom2].add(atom1)
+            self.molecules.add_edge(atom1, atom2)
             return True
         else:
             return False
@@ -178,7 +170,7 @@ class Universe:
         """
         Looks in the dictionary self.bonds to find the set of molecules.
         """
-        return []
+        return [molecule for molecule in nx.connected_components(self.molecules) if len(molecule) > 1]
 
     def collisions(self, atoms, min_distance=1, bond_length=0.5):
         """
@@ -198,7 +190,6 @@ class Universe:
         """
         Update the Universe.
         """
-
         # Figure out the time since the last update.
         if self.t1 is None:
             self.t1 = time.time()
