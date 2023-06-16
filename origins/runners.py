@@ -1,5 +1,5 @@
 import networkx as nx
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt, animation
 from matplotlib.animation import FuncAnimation
 
 
@@ -42,21 +42,23 @@ class GraphRunner:
         self.universe = universe
 
     def start(self):
+
         plt.rcParams["figure.figsize"] = [7.50, 3.50]
         plt.rcParams["figure.autolayout"] = True
 
-        # Create the figure and axis
         fig = plt.figure()
 
-        # Animation update function
-        def update(frame):
-            self.universe.update()
-            fig.clear()
-            nx.draw(self.universe.particle_graph, with_labels=True)
+        G = self.universe.particle_graph
 
-        # Create the animation
-        nx.draw(self.universe.particle_graph, with_labels=True)
-        animation = FuncAnimation(fig, update, frames=100, interval=self.interval, blit=True)
+        positions = {atom: (atom.x, atom.y) for atom in self.universe.atoms}
+        nx.draw(G, positions, with_labels=False)
 
-        # Show the animation
+        def animate(frame):
+           fig.clear()
+           self.universe.update()
+           positions = {atom: (atom.x, atom.y) for atom in self.universe.atoms}
+           nx.draw(G, positions, with_labels=False)
+
+        ani = animation.FuncAnimation(fig, animate, frames=100, interval=self.interval, repeat=True)
+
         plt.show()
