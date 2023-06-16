@@ -170,12 +170,13 @@ class Universe:
         atom.x += atom.vx * delta_t
         atom.y += atom.vy * delta_t
 
-    def update_molecule_position(self, molecule):
+    def update_molecule_position(self, molecule, delta_t):
         """
         Update the position of a molecule.
         The new position of the atoms in a molecule need to be determined together.
         """
-
+        # Skip this code for now, becuase its not working yet.
+        return
         # TODO: Need to update this code. its probably not working.
         atom1.vx = atom2.vx
         atom1.vy = atom2.vx

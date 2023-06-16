@@ -52,10 +52,10 @@ class GraphRunner:
         def update(frame):
             self.universe.update()
             fig.clear()
-            nx.draw(self.universe.molecules, with_labels=True)
+            nx.draw(self.universe.particle_graph, with_labels=True)
 
         # Create the animation
-        nx.draw(self.universe.molecules, with_labels=True)
+        nx.draw(self.universe.particle_graph, with_labels=True)
         animation = FuncAnimation(fig, update, frames=100, interval=self.interval, blit=True)
 
         # Show the animation
