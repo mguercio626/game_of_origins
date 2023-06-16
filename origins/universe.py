@@ -5,6 +5,9 @@ import networkx as nx
 
 
 def distance(atom1, atom2):
+    """
+    Returns the distance between two atoms
+    """
     x = atom1.x - atom2.x
     y = atom1.y - atom2.y
     return (x**2 + y**2) ** 0.5
@@ -12,7 +15,7 @@ def distance(atom1, atom2):
 
 def components(magnitude, atom1, atom2):
     """
-    returns the x and y components of the force of atom2 on atom1.
+    Returns the x and y components of the force of atom2 on atom1
     """
     dist = max(distance(atom1, atom2), 1e-9)
     xratio = (atom1.x - atom2.x) / dist
@@ -24,7 +27,7 @@ def components(magnitude, atom1, atom2):
 
 class Force:
     """
-    The definition of a force.
+    This represents the base class for all of the forces in the universe
     """
 
     def __init__(self, multiplier):
@@ -36,7 +39,7 @@ class Force:
 
 class Wind(Force):
     """
-    The definition of a force.
+    This represents an extended class for a basic force to replicate wind.
     """
 
     def apply(self, atoms):
@@ -45,24 +48,27 @@ class Wind(Force):
 
 
 class Electric(Force):
-    # def force(self, atom1, atom2):
-    #    return (self.multiplier * atom1.charge * atom2.charge) \
-    #            /distance(atom1,atom2)**2
+    """ "
+    The definition of an electrical force between atoms with charges.
+    """
 
     def force_components(self, atom1, atom2):
         """
-        returns the x and y components of the force of atom2 on atom1.
+        Returns the x and y components of the force of atom2 on atom1.
         """
         dist = max(distance(atom1, atom2), 1e-9)
         magnitude = (self.multiplier * atom1.charge * atom2.charge) / dist**2
         xratio = (atom1.x - atom2.x) / dist
         yratio = (atom1.y - atom2.y) / dist
-        # print(f"distance: {dist}, magnitude: {magnitude}, xratio: {xratio}, yratio: {yratio}")
+
         fx = magnitude * xratio
         fy = magnitude * yratio
         return fx, fy
 
     def apply(self, atoms):
+        """
+        This finds and applies the electrical force between all combinations of 2 atoms in the universe"
+        """
         for atom1, atom2 in combinations(atoms, 2):
             fx, fy = self.force_components(atom1, atom2)
             atom1.vx += fx / atom1.mass
@@ -80,6 +86,7 @@ class Atom:
 
     def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, name="atom"):
         self.name = name
+        # Maximum positions, velocities, and masses of all atoms when randomly generating atoms
         self.max_x = 25
         self.max_y = 25
         self.max_vx = 10
@@ -92,6 +99,9 @@ class Atom:
         self.mass = mass
 
     def randomize(self):
+        """
+        This randomly generates atom's positions, velcoties, and masses
+        """
         self.x = random.random() * self.max_x
         self.y = random.random() * self.max_y
         self.vx = random.random() * self.max_vx
@@ -100,7 +110,12 @@ class Atom:
 
 
 class Ion(Atom):
+    """
+    An extended class of atoms that has charges.
+    """
+
     def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, charge=0, name="ion"):
+        # Maximum and minimum charges of ions randomly generated
         self.max_charge = 2
         self.min_charge = -2
         self.charge = charge
@@ -112,6 +127,10 @@ class Ion(Atom):
 
 
 class Universe:
+    """
+    The universe in which all objects exist.
+    """
+
     def __init__(self, atoms, size_x, size_y, forces=[Electric(10)]):
         self.size_x = size_x
         self.size_y = size_y
@@ -217,10 +236,19 @@ class Universe:
         self.t1 = t2
 
     def get_positions(self):
+        """
+        Returns the (x,y) positions for all atoms in the universe
+        """
         return [(atom.x, atom.y) for atom in self.atoms]
 
     def get_masses(self):
+        """
+        Returns the masses for all atoms in the universe
+        """
         return [atom.mass for atom in self.atoms]
 
     def get_charges(self):
+        """
+        Returns the charges for all atoms in the universe
+        """
         return [atom.charge for atom in self.atoms]
