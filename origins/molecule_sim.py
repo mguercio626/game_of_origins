@@ -1,5 +1,5 @@
 import random
-from origins.runner import GraphRunner
+from origins.runners import GraphRunner
 from origins.universe import Ion, Universe, Electric
 
 # atoms = [Ion(x=10, y=10, vx=10, vy=10, mass=10, charge=10, name='A'),
