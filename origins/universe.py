@@ -137,12 +137,12 @@ class Universe:
         self.atoms = atoms
         self.forces = forces
         self.t1 = None
-        self.molecules = nx.Graph()
-        self.molecules.add_nodes_from(atoms)
+        self.particle_graph = nx.Graph()
+        self.particle_graph.add_nodes_from(atoms)
 
     def opposite_bond(self, atom1, atom2):
         if atom1.charge == -atom2.charge:
-            self.molecules.add_edge(atom1, atom2)
+            self.particle_graph.add_edge(atom1, atom2)
             return True
         else:
             return False
@@ -189,7 +189,7 @@ class Universe:
         """
         Looks in the dictionary self.bonds to find the set of molecules.
         """
-        return [molecule for molecule in nx.connected_components(self.molecules) if len(molecule) > 1]
+        return [molecule for molecule in nx.connected_components(self.particle_graph) if len(molecule) > 1]
 
     def collisions(self, atoms, min_distance=1, bond_length=0.5):
         """
@@ -222,16 +222,12 @@ class Universe:
         for force in self.forces:
             force.apply(self.atoms)
 
-        # Update the positions of the atoms.
-        free_atoms = [atom for atom in self.atoms if not len(self.bonds[atom])]
-        for atom in free_atoms:
-            self.update_atom_position(atom, delta_t)
-
-        # Update the position of the molecules.
-        # The function find_molecules needs to be written.
-        molecules = self.find_molecules()
-        for molecule in molecules:
-            self.update_molecule_position(molecule, delta_t)
+        # Separate atoms and molcules and update positions
+        for component in nx.connected_components(self.particle_graph):
+            if len(component) == 1:
+                self.update_atom_position(component.pop(), delta_t)
+            elif len(component) > 1:
+                self.update_molecule_position(component, delta_t)
 
         self.t1 = t2
 
