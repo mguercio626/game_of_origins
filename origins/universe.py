@@ -80,6 +80,38 @@ class Electric(Force):
             atom2.vy += fy / atom2.mass
 
 
+class Collision(Force):
+    """
+    The definition of a force due to atoms becoming too close to each other
+    """
+
+    def force_components(self, atom1, atom2):
+        """
+        Returns the x and y components of the force of atom2 on atom1.
+        """
+        dist = max(distance(atom1, atom2), 1e-9)
+        magnitude = (-1 * self.multiplier * atom1.charge * atom2.charge) / dist**4
+        xratio = (atom1.x - atom2.x) / dist
+        yratio = (atom1.y - atom2.y) / dist
+
+        fx = magnitude * xratio
+        fy = magnitude * yratio
+        return fx, fy
+
+    def apply(self, atoms):
+        """
+        This finds and applies the electrical force between all combinations of 2 atoms in the universe"
+        """
+        for atom1, atom2 in combinations(atoms, 2):
+            fx, fy = self.force_components(atom1, atom2)
+            atom1.vx += fx / atom1.mass
+            atom1.vy += fy / atom1.mass
+
+            fx, fy = self.force_components(atom2, atom1)
+            atom2.vx += fx / atom2.mass
+            atom2.vy += fy / atom2.mass
+
+
 class Atom:
     """
     The most basic object in the universe.
@@ -194,19 +226,25 @@ class Universe:
         atom1.charge = 0
         atom2.charge = 0
 
-    def collisions(self, atoms, min_distance=1, bond_length=0.5):
+    def collisions(self, min_distance=1, bond_length=0.5):
         """
         Handle Atom collisions.
         If two atoms collide either form a bond or deflect.
         """
 
         collisions = [
-            (atom1, atom2) for atom1, atom2 in combinations(atoms, 2) if distance(atom1, atom2) < min_distance
+            (atom1, atom2) for atom1, atom2 in combinations(self.atoms, 2) if distance(atom1, atom2) < min_distance
         ]
         for atom1, atom2 in collisions:
             bond_formed = self.opposite_bond(atom1, atom2)
-            if not bond_formed:
-                self.deflect(atom1, atom2)
+        # if not bond_formed:
+        # self.deflect(atom1, atom2)
+
+    def break_bonds(self, max_bond_dist=2):
+        bonds = self.particle_graph.edges
+        for atom1, atom2 in bonds:
+            if distance(atom1, atom2) > max_bond_dist:
+                self.particle_graph.remove_edge(atom1, atom2)
 
     def update(self):
         """
@@ -219,7 +257,8 @@ class Universe:
         delta_t = t2 - self.t1
 
         # Handle Atom collisions.
-        self.collisions(self.atoms)
+        self.collisions()
+        self.break_bonds()
 
         # Apply the forces to the atoms.
         for force in self.forces:
