@@ -1,5 +1,6 @@
 from itertools import combinations
 import random
+import statistics
 import time
 import networkx as nx
 
@@ -175,6 +176,13 @@ class Universe:
         Update the position of a molecule.
         The new position of the atoms in a molecule need to be determined together.
         """
+        vx = statistics.mean([atom.vx for atom in molecule])
+        vy = statistics.mean([atom.vy for atom in molecule])
+        for atom in molecule:
+            atom.vx = vx
+            atom.vy = vy
+            self.update_atom_position(atom, delta_t)
+
         # Skip this code for now, becuase its not working yet.
         return
         # TODO: Need to update this code. its probably not working.
@@ -185,12 +193,6 @@ class Universe:
         atom1.y = atom2.y + bond_y
         atom1.charge = 0
         atom2.charge = 0
-
-    def find_molecules(self):
-        """
-        Looks in the dictionary self.bonds to find the set of molecules.
-        """
-        return [molecule for molecule in nx.connected_components(self.particle_graph) if len(molecule) > 1]
 
     def collisions(self, atoms, min_distance=1, bond_length=0.5):
         """

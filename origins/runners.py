@@ -42,22 +42,46 @@ class GraphRunner:
         self.universe = universe
 
     def start(self):
+        # plt.rcParams["figure.figsize"] = [7.50, 3.50]
+        # plt.rcParams["figure.autolayout"] = True
 
-        plt.rcParams["figure.figsize"] = [7.50, 3.50]
-        plt.rcParams["figure.autolayout"] = True
-
-        fig = plt.figure()
+        fig, ax = plt.subplots()
+        ax.set_xlim(0, self.universe.size_x)
+        ax.set_ylim(0, self.universe.size_y)
 
         G = self.universe.particle_graph
 
         positions = {atom: (atom.x, atom.y) for atom in self.universe.atoms}
-        nx.draw(G, positions, with_labels=False)
+        node_sizes = self.universe.get_masses()
+        node_colors = self.universe.get_charges()
+        nx.draw(
+            G,
+            positions,
+            ax=ax,
+            with_labels=False,
+            node_size=node_sizes,
+            node_color=node_colors,
+            cmap="coolwarm",
+            edge_color="black",
+        )
 
         def animate(frame):
-           fig.clear()
-           self.universe.update()
-           positions = {atom: (atom.x, atom.y) for atom in self.universe.atoms}
-           nx.draw(G, positions, with_labels=False)
+            ax.clear()
+            self.universe.update()
+            positions = {atom: (atom.x, atom.y) for atom in self.universe.atoms}
+
+            ax.set_xlim(0, self.universe.size_x)
+            ax.set_ylim(0, self.universe.size_y)
+            nx.draw(
+                G,
+                positions,
+                ax=ax,
+                with_labels=False,
+                node_size=node_sizes,
+                node_color=node_colors,
+                cmap="coolwarm",
+                edge_color="black",
+            )
 
         ani = animation.FuncAnimation(fig, animate, frames=100, interval=self.interval, repeat=True)
 
