@@ -6,11 +6,11 @@ from origins.universe import Ion, Universe, Electric, Collision
 #        Ion(x=20, y=20, vx=10, vy=10, mass=10, charge=10, name='B')]
 
 atoms = []
-for i in range(25):
+for i in range(100):
     atom = Ion()
     atom.randomize()
     atoms.append(atom)
 
-universe = Universe(atoms, 25, 25, forces=[Electric(10), Collision(1)])
+universe = Universe(atoms, 25, 25, forces=[Electric(1), Collision(1)])
 runner = GraphRunner(universe, interval=(20))
 runner.start()
