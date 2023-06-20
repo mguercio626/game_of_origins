@@ -80,7 +80,7 @@ class Electric(Force):
             atom2.vy += fy / atom2.mass
 
 
-class Collision(Force):
+class Exclusion(Force):
     """
     The definition of a force due to atoms becoming too close to each other
     """
@@ -90,7 +90,7 @@ class Collision(Force):
         Returns the x and y components of the force of atom2 on atom1.
         """
         dist = max(distance(atom1, atom2), 1e-9)
-        magnitude = (-1 * self.multiplier * atom1.charge * atom2.charge) / dist**4
+        magnitude = (-1 * self.multiplier * atom1.charge * atom2.charge) / (dist*10)**3
         xratio = (atom1.x - atom2.x) / dist
         yratio = (atom1.y - atom2.y) / dist
 
@@ -117,11 +117,11 @@ class Atom:
     The most basic object in the universe.
     """
 
-    def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, name="atom"):
+    def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, name="atom", max_x=25, max_y=25):
         self.name = name
         # Maximum positions, velocities, and masses of all atoms when randomly generating atoms
-        self.max_x = 25
-        self.max_y = 25
+        self.max_x = max_x
+        self.max_y = max_y
         self.max_vx = 10
         self.max_vy = 10
         self.max_mass = 50
@@ -147,12 +147,12 @@ class Ion(Atom):
     An extended class of atoms that has charges.
     """
 
-    def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, charge=0, name="ion"):
+    def __init__(self, x=0, y=0, vx=0, vy=0, mass=0, charge=0, name="ion", *args, **kwargs):
         # Maximum and minimum charges of ions randomly generated
         self.max_charge = 2
         self.min_charge = -2
         self.charge = charge
-        super().__init__(x, y, vx, vy, mass, name=name)
+        super().__init__(x, y, vx, vy, mass, name=name, *args, **kwargs)
 
     def randomize(self):
         self.charge = random.randint(self.min_charge, self.max_charge)
@@ -181,10 +181,10 @@ class Universe:
             return False
 
     def deflect(self, atom1, atom2):
-        atom1.vx *= -1
-        atom1.vy *= -1
-        atom2.vx *= -1
-        atom2.vx *= -1
+        atom1.vx *= -0.5
+        atom1.vy *= -0.5
+        atom2.vx *= -0.5
+        atom2.vx *= -0.5
 
     def update_atom_position(self, atom, delta_t):
         """
@@ -196,9 +196,9 @@ class Universe:
         future_y = atom.y + (atom.vy * delta_t)
 
         if future_x <= 0 or future_x >= self.size_x:
-            atom.vx *= -1
+            atom.vx *= -0.5
         if future_y <= 0 or future_y >= self.size_y:
-            atom.vy *= -1
+            atom.vy *= -0.5
 
         atom.x += atom.vx * delta_t
         atom.y += atom.vy * delta_t
