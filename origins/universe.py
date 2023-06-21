@@ -265,11 +265,13 @@ class Universe:
             force.apply(self.atoms)
 
         # Separate atoms and molcules and update positions
-        for component in nx.connected_components(self.particle_graph):
-            if len(component) == 1:
-                self.update_atom_position(component.pop(), delta_t)
-            elif len(component) > 1:
-                self.update_molecule_position(component, delta_t)
+        #for component in nx.connected_components(self.particle_graph):
+        #    if len(component) == 1:
+        #        self.update_atom_position(component.pop(), delta_t)
+        #    elif len(component) > 1:
+        #        self.update_molecule_position(component, delta_t)
+        for atom in self.atoms:
+            self.update_atom_position(atom, delta_t)
 
         self.t1 = t2
 
