@@ -1,30 +1,19 @@
-import numpy as np
-import matplotlib.pyplot as plt
+def distance(atom1, atom2):
+    """
+    Returns the distance between two atoms
+    """
+    x = atom1.x - atom2.x
+    y = atom1.y - atom2.y
+    return (x**2 + y**2) ** 0.5
 
 
-def electric_force(dist):
-    multiplier = 1
-    charge1 = 1
-    charge2 = 1
-    return (multiplier * charge1 * charge2) / (dist**2)
-
-
-def collision_force(dist):
-    multiplier = 1
-    return  -1 * multiplier / ((dist*10)**3)
-
-
-ef = np.vectorize(electric_force)
-cf = np.vectorize(collision_force)
-x = np.arange(0.000001,1,0.000001)
-yef = ef(x)
-ycf = cf(x)
-
-
-plt.axis([0, 0.1, -1000000, 1000000])
-plt.plot(x, yef)
-plt.plot(x, ycf)
-plt.plot(x, yef + ycf)
-plt.xlabel("distance")
-plt.ylabel("force")
-plt.show()
+def components(magnitude, atom1, atom2):
+    """
+    Returns the x and y components of the force of atom2 on atom1
+    """
+    dist = max(distance(atom1, atom2), 1e-9)
+    xratio = (atom1.x - atom2.x) / dist
+    yratio = (atom1.y - atom2.y) / dist
+    fx = magnitude * xratio
+    fy = magnitude * yratio
+    return fx, fy
