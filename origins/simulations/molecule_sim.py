@@ -1,6 +1,8 @@
 import random
 from origins.runners import GraphRunner
-from origins.universe import Ion, Universe, Electric, Exclusion
+from origins.universe import Universe
+from origins.forces import Electric, Exclusion
+from origins.atoms import Ion
 
 size_x = 5
 size_y = 5

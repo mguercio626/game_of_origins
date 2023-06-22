@@ -1,6 +1,8 @@
 import random
 from origins.runners import ScatterRunner
-from origins.universe import Ion, Universe, Electric
+from origins.universe import Universe
+from origins.forces import Electric
+from origins.atoms import Ion
 
 # atoms = [Ion(x=10, y=10, vx=10, vy=10, mass=10, charge=10, name='A'),
 #        Ion(x=20, y=20, vx=10, vy=10, mass=10, charge=10, name='B')]
