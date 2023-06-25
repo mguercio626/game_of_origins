@@ -6,7 +6,6 @@ This project is still in its early stages.
 
 ---
 
-
 ## Features
 
 #### Visualization
@@ -48,3 +47,25 @@ A Force changes the velocity of the atoms.
 ```
 pip install -e .
 ```
+
+## Simulations
+
+The python scripts located in the simulations folder run simulations that have notable properties. For example polar_sim.py has a Universe with Electric and Exclusion forces, and three atoms that resemble the two Hydrogen and Oxygen of water. Two atoms are negatively charged and the other is positively charged. They fail to form a stable molecule because the two negatively charged atoms repel each other. Which suggests that point charges are not sufficient from produce complexity like life. What else is neccessary to form stable molecules, and produce greater complexity?
+
+
+## Universal Measurements
+
+We plan to add code to quantify the complexity of the simulation, this would allow us to start to understand the effects of the forces and atoms on complexity.
+
+This would also let us brute force large number of simulations and pick out the most interesting ones, or determine the correlation between the parameters and complexity.
+
+
+## Garrett hypothesis
+
+The second law of thermodynamics states that the entropy of the universe will increase always increase over time. Another way of stating the second law of thermodynamics is that energy will always become less clumped up over time.  The second law of thermodynamics is true because the unordered state is more probable. So you could say that the universe progresses to the more probable.
+
+We could define life as something that self replicates.  Self replication has exponential growth. Once we introduce self replication into the universe, the most probable then starts to become things that self replicate well, life appears to be acting against the progression towards entropy.  While locally the entropy decreases, the overall entropy of the system is still increasing.
+
+Self replication requires actuation and logic.
+
+Perhaps another way to describe evolution, other than survival of the fittest, is survival of the most probable.
