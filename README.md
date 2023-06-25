@@ -6,6 +6,13 @@ This project is still in its early stages.
 
 ---
 
+## Installation
+
+```
+pip install -e .
+```
+---
+
 ## Features
 
 #### Visualization
@@ -41,11 +48,34 @@ A Force changes the velocity of the atoms.
 - Exclusion - A Force that prevents atoms from occupying the same location.
 - Gravity - A Force the causes masses to be attracted to each other. (todo)
 
+---
 
-## Installation
+## Usage
 
 ```
-pip install -e .
+# Imports
+import random
+from origins.runners import GraphRunner
+from origins.universe import Universe
+from origins.atoms import Ion
+from origins.forces import Electric, Exclusion
+
+# Make some Atoms:
+atoms = [Ion(x=1.9, y=1, vx=0, vy=0, mass=1, charge=1, name='H'),
+         Ion(x=1.1, y=1.1, vx=0, vy=0, mass=1, charge=1, name='H'),
+         Ion(x=1, y=1, vx=0, vy=0, mass=16, charge=-1, name='O')]
+
+# Make some Forces:
+forces=[Electric(0.1), Exclusion(0.01)]
+
+# Make the Universe and give it your atoms and forces.
+size_x = 5
+size_y = 5
+universe = Universe(atoms, size_x, size_y, forces=forces)
+
+# Pass the Universe to the Runner, which will run the universe and do visualization.
+runner = GraphRunner(universe, interval=(10))
+runner.start()
 ```
 
 ## Simulations
@@ -59,6 +89,7 @@ We plan to add code to quantify the complexity of the simulation, this would all
 
 This would also let us brute force large number of simulations and pick out the most interesting ones, or determine the correlation between the parameters and complexity.
 
+---
 
 ## Garrett hypothesis
 
