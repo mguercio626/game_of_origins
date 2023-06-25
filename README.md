@@ -48,6 +48,10 @@ A Force changes the velocity of the atoms.
 - Exclusion - A Force that prevents atoms from occupying the same location.
 - Gravity - A Force the causes masses to be attracted to each other. (todo)
 
+#### Runners
+
+A runner is the object that runs the Universe or Universes, and displays the results.  So far this just means visualization. Eventually we would like this to expand to multiprocess, multinode, and gpu simulations.
+
 ---
 
 ## Usage
