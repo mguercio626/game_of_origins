@@ -1,9 +1,9 @@
 # Origins
-This project is a mathematical/computational exploration of the origin of life.
-Specifially, to understand how complextity can emerge from a set of building blocks and forces.
-For our purposes we define life as something that has self-replication.
+This project is a from-scratch mathematical/computational exploration of the origin of life.
+Specifically to understand how complexity can emerge from building blocks and forces.
+For our purposes, we define life as something that has self-replication.
 
-This project is still in it's early stages.
+This project is still in its early stages.
 
 ---
 
@@ -51,7 +51,7 @@ A Force changes the velocity of the atoms.
 
 #### Runners
 
-A runner is the object that runs the Universe or Universes, and displays the results.  So far this just means visualization. Eventually we would like this to expand to multiprocess, multinode, and gpu simulations.
+A runner is the object that runs the Universe or Universes, and displays the results.  So far this just means visualization. Eventually we would like this to include to multiprocess, multinode, and gpu simulations.
 
 ---
 
@@ -85,28 +85,28 @@ runner.start()
 
 ## Simulations
 
-The python scripts located in the simulations folder run simulations that have notable properties. For example polar_sim.py has a Universe with Electric and Exclusion forces, and three atoms that resemble the two Hydrogen and Oxygen of water. Two atoms are negatively charged and the other is positively charged. They fail to form a stable molecule because the two negatively charged atoms repel each other. Which suggests that point charges are not sufficient from produce complexity like life. What else is neccessary to form stable molecules, and produce greater complexity?
+The python scripts located in the simulations folder run simulations that have notable properties. For example, polar_sim.py has a Universe with Electric and Exclusion forces and three atoms resembling the Hydrogen and Oxygen of water. Two of the atoms are negatively charged, and one is is positively charged. They fail to form a stable molecule because the two negatively charged atoms repel each other. This suggests that point charges are not sufficient to produce complexity like life. What else is necessary to form stable molecules and create greater complexity?
 
 
 ## Universal Measurements
 
-We plan to add code to quantify the complexity of the simulation, this would allow us to start to understand the effects of the forces and atoms on complexity.
+We plan to add code to quantify the complexity of the simulation. This would allow us to start to understand the effects of the forces and atoms on complexity.
 
-This would also let us brute force large number of simulations and pick out the most interesting ones, or determine the correlation between the parameters and complexity.
+This would also let us brute force a large number of simulations and pick out the most interesting ones or determine the correlation between the parameters and complexity.
 
 ---
 
 ## Garrett thoughts.
-Before I share my thoughts I want to preface them by saying that I don't know much about this topic.
+Before I share my thoughts, I want to preface them by saying that I don't know much about this topic.
 
-I think the general problem of the origin of life is a mathmatical and computational problem, while the specific problem of life in our universe is an experimental problem.
+I think the general problem of the origin of life is a mathematical and computational problem, while the specific problem of life in our universe is an experimental problem.
 
-The second law of thermodynamics says that the entropy of the universe will always increase over time. Another way of stating the second law of thermodynamics is that energy will always become less clumped up over time.  The second law of thermodynamics is true because the unordered state is more probable. So you could say that the universe progresses to the more probable.
+The second law of thermodynamics says that the entropy of the universe will always increase over time.  Another way to state the second law of thermodynamics is that energy will always become less clumped over time.  The second law of thermodynamics is true because the unordered state is more probable.  So, you could say that the universe progresses to the more probable.
 
-We could define life as something that self-replicates.  Self-replication has exponential growth. Once we introduce life into the universe, the ordered state of self-replicators starts to become more probable, relative to the disordered state. Perhaps another way to describe evolution, other than the phrase, "survival of the fittest", is survival of the most probable.
+We could define life as something that self-replicates.  Self-replication has exponential growth.  Once we introduce life into the universe, the ordered state of self-replicators becomes more probable relative to the disordered state.  Perhaps another way to describe evolution, other than the phrase "survival of the fittest" is survival of the most probable.
 
-Life appears to be resisting the march towards entropy, at the cost of energy.  The overall entropy of the system is still increasing.
+Life appears to be resisting the march towards entropy at the cost of energy.  The overall entropy of the system is still increasing.
 
-Self-replication requires actuation, logic, and composition of these components. Maybe we can figure out some of the requirements for logic and actuation to emerge. Or, given a system that has logic and actuation, understand some of the requirements for self-replication to emerge.
+Self-replication requires actuation, logic, and composition of these components.  Maybe we can figure out some of the requirements for logic and actuation to emerge.  Or, given a system that has logic and actuation, understand some of the requirements for self-replication to emerge.
 
-Maybe we can use AI to improve the computation speed. Instead of computing the value of n(n+1)/2 forces (between each combination of atoms) and then upding the atom positions, maybe we can train an AI to make a good guess at the particle positions of the next iteration.
+Maybe we can use AI to improve the computation speed.  Instead of computing the value of n(n+1)/2 forces (between each combination of atoms) and then updating the atom positions, maybe we can train an AI to make a good guess at the particle positions of the next iteration.
