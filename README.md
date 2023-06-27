@@ -1,8 +1,9 @@
 # Origins
-The purpose of this project is to explore the origin of life.
+This project is a mathematical/computational exploration of the origin of life.
 Specifially, to understand how complextity can emerge from a set of building blocks and forces.
+For our purposes we define life as something that has self-replication.
 
-This project is still in its early stages.
+This project is still in it's early stages.
 
 ---
 
@@ -95,12 +96,17 @@ This would also let us brute force large number of simulations and pick out the 
 
 ---
 
-## Garrett hypothesis
+## Garrett thoughts.
+Before I share my thoughts I want to preface them by saying that I don't know much about this topic.
 
-The second law of thermodynamics states that the entropy of the universe will increase always increase over time. Another way of stating the second law of thermodynamics is that energy will always become less clumped up over time.  The second law of thermodynamics is true because the unordered state is more probable. So you could say that the universe progresses to the more probable.
+I think the general problem of the origin of life is a mathmatical and computational problem, while the specific problem of life in our universe is an experimental problem.
 
-We could define life as something that self replicates.  Self replication has exponential growth. Once we introduce self replication into the universe, the most probable then starts to become things that self replicate well, life appears to be acting against the progression towards entropy.  While locally the entropy decreases, the overall entropy of the system is still increasing.
+The second law of thermodynamics says that the entropy of the universe will always increase over time. Another way of stating the second law of thermodynamics is that energy will always become less clumped up over time.  The second law of thermodynamics is true because the unordered state is more probable. So you could say that the universe progresses to the more probable.
 
-Self replication requires actuation and logic.
+We could define life as something that self replicates.  Self-replication has exponential growth. Once we introduce life into the universe, the ordered state of self-replicators starts to become more probable, relative to the disordered state. Perhaps another way to describe evolution, other than the phrase, "survival of the fittest", is survival of the most probable.
 
-Perhaps another way to describe evolution, other than survival of the fittest, is survival of the most probable.
+Life appears to be resisting the march towards entropy, at the cost of energy.  The overall entropy of the system is still increasing.
+
+Self-replication requires actuation, logic, and composition of these components. Maybe we can figure out some of the requirements for logic and actuation to emerge. Or, given a system that has logic and actuation, understand some of the requirements for self-replication to emerge.
+
+Maybe we can use AI to improve the computation speed. Instead of computing the value of n(n+1)/2 forces (between each combination of atoms) and then upding the atom positions, maybe we can train an AI make a good guess at the particle positions of the next iteration.
