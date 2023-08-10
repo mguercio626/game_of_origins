@@ -93,20 +93,3 @@ The python scripts located in the simulations folder run simulations that have n
 We plan to add code to quantify the complexity of the simulation. This would allow us to start to understand the effects of the forces and atoms on complexity.
 
 This would also let us brute force a large number of simulations and pick out the most interesting ones or determine the correlation between the parameters and complexity.
-
----
-
-## Garrett thoughts.
-Before I share my thoughts, I want to preface them by saying that I don't know much about this topic.
-
-I think the general problem of the origin of life is a mathematical and computational problem, while the specific problem of life in our universe is an experimental problem.
-
-The second law of thermodynamics says that the entropy of the universe will always increase over time.  Another way to state the second law of thermodynamics is that energy will always become less clumped over time.  The second law of thermodynamics is true because the unordered state is more probable.  So, you could say that the universe progresses to the more probable.
-
-We could define life as something that self-replicates.  Self-replication has exponential growth.  Once we introduce life into the universe, the ordered state of self-replicators becomes more probable relative to the disordered state.  Perhaps another way to describe evolution, other than the phrase "survival of the fittest" is survival of the most probable.
-
-Life appears to be resisting the march towards entropy at the cost of energy.  The overall entropy of the system is still increasing.
-
-Self-replication requires actuation, logic, and composition of these components.  Maybe we can figure out some of the requirements for logic and actuation to emerge.  Or, given a system that has logic and actuation, understand some of the requirements for self-replication to emerge.
-
-Maybe we can use AI to improve the computation speed.  Instead of computing the value of n(n+1)/2 forces (between each combination of atoms) and then updating the atom positions, maybe we can train an AI to make a good guess at the particle positions of the next iteration.
